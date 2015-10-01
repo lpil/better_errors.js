@@ -1,10 +1,12 @@
 'use strict';
 
 function parseFrame(frame) {
-  var match = /at (.+) \((.+)\)/.exec(frame);
+  var match = /at (.+) \((.+):(\d+):(\d+)\)/.exec(frame);
   return {
-    foo: frame,
-    functionName: match,
+    functionName: match[1],
+    file: match[2],
+    line: match[3],
+    column: match[4],
   };
 }
 
@@ -14,10 +16,12 @@ function parseStack(stack) {
   return stack.map(parseFrame);
 }
 
-module.exports = function parse(err) {
+function parse(err) {
   const errorData = {
     stack: parseStack(err.stack),
   };
 
   return errorData;
-};
+}
+
+module.exports = { parse, parseFrame };
