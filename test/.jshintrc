@@ -1,6 +1,8 @@
 {
   "extends": "../.jshintrc",
 
+  "maxstatements" : 100,
+
   "mocha"  : true,
 
   "globals": {

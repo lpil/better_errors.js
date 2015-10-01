@@ -21,16 +21,26 @@ function parseFrame(frame) {
   };
 }
 
-const firstRegex = /Error: (.+)$/;
+const msgRegex = /(\w+): (.+)$/;
 
 function parseError(err) {
+  let   type;
+  let   msg   = null;
   const stack = err.stack.split('\n');
   const first = stack.shift();
-  const name  = firstRegex.exec(first)[1];
+  const match = msgRegex.exec(first);
+
+  if (match) {
+    type  = match[1];
+    msg   = match[2];
+  } else {
+    type = first;
+  }
 
   return {
-    message: name,
-    stack: stack.map(parseFrame),
+    type:    type,
+    message: msg,
+    stack:   stack.map(parseFrame),
   };
 }
 

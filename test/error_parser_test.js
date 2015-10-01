@@ -137,9 +137,15 @@ describe('parseFrame', () => {
 });
 
 describe('parseError', () => {
-  it('it assigns the error name', () => {
+  it('assigns the error message if there is one', () => {
     const err  = new Error('Hello');
     const data = mod.parseError(err);
     assert.equal('Hello', data.message);
+  });
+
+  it('assigns null if there is no message', () => {
+    const err  = new Error();
+    const data = mod.parseError(err);
+    assert.equal(null, data.message);
   });
 });
