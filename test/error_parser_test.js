@@ -134,6 +134,18 @@ describe('parseFrame', () => {
     };
     assert.deepEqual(expected, result);
   });
+
+  it('works for native functions', () => {
+    const frame    = '  at Array.map (native)';
+    const result   = mod.parseFrame(frame);
+    const expected = {
+      functionName: 'Array.map',
+      file:   null,
+      line:   null,
+      column: null,
+    };
+    assert.deepEqual(expected, result);
+  });
 });
 
 describe('parseError', () => {

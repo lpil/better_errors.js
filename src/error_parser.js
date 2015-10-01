@@ -2,22 +2,39 @@
 
 const nameRegex   = /at (.+) \((.+):(\d+):(\d+)\)$/;
 const noNameRegex = /at( )(.+):(\d+):(\d+)$/;
+const nativeRegex = /at (.+) \(native\)$/;
 
 function parseFrame(frame) {
-  let name  = null;
-  let match = nameRegex.exec(frame);
+  let name   = null;
+  let line   = null;
+  let column = null;
+  let file   = null;
+  let match  = nameRegex.exec(frame);
 
+  // Is it a named function?
   if (match) {
     name = match[1];
   } else {
+    // Perhaps it's an anonymous function
     match = noNameRegex.exec(frame);
+  }
+
+  if (match) {
+    line   = parseInt(match[3]);
+    column = parseInt(match[4]);
+    file   = match[2];
+
+  } else {
+    // It must be a native function.
+    match = nativeRegex.exec(frame);
+    name  = match[1];
   }
 
   return {
     functionName: name,
-    file:   match[2],
-    line:   parseInt(match[3]),
-    column: parseInt(match[4]),
+    file:   file,
+    line:   line,
+    column: column,
   };
 }
 
