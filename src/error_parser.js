@@ -1,12 +1,23 @@
 'use strict';
 
+const nameRegex   = /^  at (.+) \((.+):(\d+):(\d+)\)$/;
+const noNameRegex = /^  at( )(.+):(\d+):(\d+)$/;
+
 function parseFrame(frame) {
-  var match = /at (.+) \((.+):(\d+):(\d+)\)/.exec(frame);
+  let name  = null;
+  let match = nameRegex.exec(frame);
+
+  if (match) {
+    name = match[1];
+  } else {
+    match = noNameRegex.exec(frame);
+  }
+
   return {
-    functionName: match[1],
-    file: match[2],
-    line: match[3],
-    column: match[4],
+    functionName: name,
+    file:   match[2],
+    line:   parseInt(match[3]),
+    column: parseInt(match[4]),
   };
 }
 

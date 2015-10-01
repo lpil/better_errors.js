@@ -63,7 +63,7 @@ describe('parseFrame', () => {
     assert.deepEqual(expected, result);
   });
 
-  xit('works for case 4, no function name', () => {
+  it('works for case 4, no function name', () => {
     const frame    = '  at mocha/lib/runner.js:528:12';
     const result   = mod.parseFrame(frame);
     const expected = {
@@ -87,7 +87,7 @@ describe('parseFrame', () => {
     assert.deepEqual(expected, result);
   });
 
-  xit('works for case 6, with no function name', () => {
+  it('works for case 6, with no function name', () => {
     const frame    = '  at mocha/lib/runner.js:351:7';
     const result   = mod.parseFrame(frame);
     const expected = {
@@ -123,11 +123,11 @@ describe('parseFrame', () => {
     assert.deepEqual(expected, result);
   });
 
-  xit('works for case 9', () => {
+  it('works for case 9', () => {
     const frame    = '  at process [as _immediateCallback] (timers.js:374:17)';
     const result   = mod.parseFrame(frame);
     const expected = {
-      functionName: 'process',
+      functionName: 'process [as _immediateCallback]',
       file: 'timers.js',
       line: 374,
       column: 17,
