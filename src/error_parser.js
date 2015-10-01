@@ -5,7 +5,7 @@ const noNameRegex = /at( )(.+):(\d+):(\d+)$/;
 const nativeRegex = /at (.+) \(native\)$/;
 
 function parseFrame(frame) {
-  let name   = null;
+  let functionName = null;
   let line   = null;
   let column = null;
   let file   = null;
@@ -13,7 +13,7 @@ function parseFrame(frame) {
 
   // Is it a named function?
   if (match) {
-    name = match[1];
+    functionName = match[1];
   } else {
     // Perhaps it's an anonymous function
     match = noNameRegex.exec(frame);
@@ -27,15 +27,10 @@ function parseFrame(frame) {
   } else {
     // It must be a native function.
     match = nativeRegex.exec(frame);
-    name  = match[1];
+    functionName = match[1];
   }
 
-  return {
-    functionName: name,
-    file:   file,
-    line:   line,
-    column: column,
-  };
+  return { functionName, file, line, column };
 }
 
 const msgRegex = /(\w+): (.+)$/;
