@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/lpil/better_errors.js#readme",
   "devDependencies": {
+    "chai": "^3.3.0",
     "jscs": "^2.1.1",
     "mocha": "^2.3.3",
     "mocha-jscs": "^3.0.0",

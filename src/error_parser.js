@@ -41,21 +41,21 @@ function parseFrame(frame) {
 const msgRegex = /(\w+): (.+)$/;
 
 function parseError(err) {
-  let   type;
+  let   name;
   let   msg   = null;
   const stack = err.stack.split('\n');
   const first = stack.shift();
   const match = msgRegex.exec(first);
 
   if (match) {
-    type  = match[1];
+    name  = match[1];
     msg   = match[2];
   } else {
-    type = first;
+    name = first;
   }
 
   return {
-    type:    type,
+    name:    name,
     message: msg,
     stack:   stack.map(parseFrame),
   };

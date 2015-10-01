@@ -3,7 +3,8 @@
 module.exports = function renderHTML(data) {
   // method
   // requestPath
-  // errorMessage
+  // error.message
+  // error.name
   // uri
 
   data.method       = data.method || 'GET';
@@ -14,7 +15,7 @@ module.exports = function renderHTML(data) {
   const html = `<!DOCTYPE html>
   <html>
     <head>
-      <title> Error at ${data.method} ${data.requestPath}</title>
+      <title> ${data.error.name} at ${data.method} ${data.requestPath}</title>
       <style>
       /* Basic reset */
       * {
@@ -616,10 +617,10 @@ module.exports = function renderHTML(data) {
       <div class="top">
         <header class="exception">
           <h2>
-            <strong>Error</strong>
+            <strong> ${data.error.name} </strong>
             <span>at ${data.method} ${data.requestPath}</span>
           </h2>
-          <p>${data.errorMessage}</p>
+          <p>${data.error.message}</p>
         </header>
       </div>
 

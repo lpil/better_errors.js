@@ -160,4 +160,11 @@ describe('parseError', () => {
     const data = mod.parseError(err);
     assert.equal(null, data.message);
   });
+
+  it('assigns the error name', () => {
+    const err  = new Error();
+    err.name   = 'MyCustomError';
+    const data = mod.parseError(err);
+    assert.equal('MyCustomError', data.name);
+  });
 });

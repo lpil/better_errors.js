@@ -1,13 +1,16 @@
 'use strict';
 
-const http = require('http');
-const app  = require('../src/render_html');
+const http   = require('http');
+const app    = require('../src/main');
+let error;
 
-const args = {
-};
+(function() {
+  error = new Error('Oh dear...');
+  error.name = 'SomeError';
+}());
 
 function reply(req, res) {
-  const page = app(args);
+  const page = app(error);
   res.end(page);
 }
 
