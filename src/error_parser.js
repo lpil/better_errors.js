@@ -16,7 +16,7 @@ function parseStack(stack) {
   return stack.map(parseFrame);
 }
 
-function parse(err) {
+function parseError(err) {
   const errorData = {
     stack: parseStack(err.stack),
   };
@@ -24,4 +24,4 @@ function parse(err) {
   return errorData;
 }
 
-module.exports = { parse, parseFrame };
+module.exports = { parseError, parseFrame };

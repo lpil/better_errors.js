@@ -50,15 +50,91 @@ describe('parseFrame', () => {
     };
     assert.deepEqual(expected, result);
   });
-});
 
-//   at Runner.runTest (mocha/lib/runner.js:421:10)
-//   at mocha/lib/runner.js:528:12
-//   at next (mocha/lib/runner.js:341:14)
-//   at mocha/lib/runner.js:351:7
-//   at next (mocha/lib/runner.js:283:14)
-//   at Immediate._onImmediate (mocha/lib/runner.js:319:5)
-//   at processImmediate [as _immediateCallback] (timers.js:374:17)
+  it('works for case 3', () => {
+    const frame    = '  at Runner.runTest (mocha/lib/runner.js:421:10)';
+    const result   = mod.parseFrame(frame);
+    const expected = {
+      functionName: 'Runner.runTest',
+      file: 'mocha/lib/runner.js',
+      line: 421,
+      column: 10,
+    };
+    assert.deepEqual(expected, result);
+  });
+
+  xit('works for case 4, no function name', () => {
+    const frame    = '  at mocha/lib/runner.js:528:12';
+    const result   = mod.parseFrame(frame);
+    const expected = {
+      functionName: null,
+      file: 'mocha/lib/runner.js',
+      line: 528,
+      column: 12,
+    };
+    assert.deepEqual(expected, result);
+  });
+
+  it('works for case 5', () => {
+    const frame    = '  at next (mocha/lib/runner.js:341:14)';
+    const result   = mod.parseFrame(frame);
+    const expected = {
+      functionName: 'next',
+      file: 'mocha/lib/runner.js',
+      line: 341,
+      column: 14,
+    };
+    assert.deepEqual(expected, result);
+  });
+
+  xit('works for case 6, with no function name', () => {
+    const frame    = '  at mocha/lib/runner.js:351:7';
+    const result   = mod.parseFrame(frame);
+    const expected = {
+      functionName: null,
+      file: 'mocha/lib/runner.js',
+      line: 351,
+      column: 7,
+    };
+    assert.deepEqual(expected, result);
+  });
+
+  it('works for case 7', () => {
+    const frame    = '  at next (mocha/lib/runner.js:283:14)';
+    const result   = mod.parseFrame(frame);
+    const expected = {
+      functionName: 'next',
+      file: 'mocha/lib/runner.js',
+      line: 283,
+      column: 14,
+    };
+    assert.deepEqual(expected, result);
+  });
+
+  it('works for case 8', () => {
+    const frame    = '  at Immediate._onImmediate (mocha/lib/runner.js:319:5)';
+    const result   = mod.parseFrame(frame);
+    const expected = {
+      functionName: 'Immediate._onImmediate',
+      file: 'mocha/lib/runner.js',
+      line: 319,
+      column: 5,
+    };
+    assert.deepEqual(expected, result);
+  });
+
+  xit('works for case 9', () => {
+    const frame    = '  at process [as _immediateCallback] (timers.js:374:17)';
+    const result   = mod.parseFrame(frame);
+    const expected = {
+      functionName: 'process',
+      file: 'timers.js',
+      line: 374,
+      column: 17,
+    };
+    assert.deepEqual(expected, result);
+  });
+});
 
 xit('works', () => {
   const err  = new Error('Hello');
