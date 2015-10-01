@@ -136,16 +136,10 @@ describe('parseFrame', () => {
   });
 });
 
-xit('works', () => {
-  const err  = new Error('Hello');
-  const data = mod.parse(err);
-  const expected = {
-    stack: [
-      {
-        functionName: 'Context.<anonymous>',
-        file: 'test/error_parser_test.js',
-      },
-    ],
-  };
-  assert.deepEqual(expected, data);
+describe('parseError', () => {
+  it('it assigns the error name', () => {
+    const err  = new Error('Hello');
+    const data = mod.parseError(err);
+    assert.equal('Hello', data.message);
+  });
 });

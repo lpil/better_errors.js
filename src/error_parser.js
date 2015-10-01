@@ -1,7 +1,7 @@
 'use strict';
 
-const nameRegex   = /^  at (.+) \((.+):(\d+):(\d+)\)$/;
-const noNameRegex = /^  at( )(.+):(\d+):(\d+)$/;
+const nameRegex   = /at (.+) \((.+):(\d+):(\d+)\)$/;
+const noNameRegex = /at( )(.+):(\d+):(\d+)$/;
 
 function parseFrame(frame) {
   let name  = null;
@@ -21,18 +21,17 @@ function parseFrame(frame) {
   };
 }
 
-function parseStack(stack) {
-  stack = stack.split('\n');
-  stack.shift();
-  return stack.map(parseFrame);
-}
+const firstRegex = /Error: (.+)$/;
 
 function parseError(err) {
-  const errorData = {
-    stack: parseStack(err.stack),
-  };
+  const stack = err.stack.split('\n');
+  const first = stack.shift();
+  const name  = firstRegex.exec(first)[1];
 
-  return errorData;
+  return {
+    message: name,
+    stack: stack.map(parseFrame),
+  };
 }
 
 module.exports = { parseError, parseFrame };
