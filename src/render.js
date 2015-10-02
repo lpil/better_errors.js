@@ -1,6 +1,44 @@
 'use strict';
 
-module.exports = function renderHTML(data) {
+function h(unsafe) {
+  unsafe = unsafe || '';
+  return unsafe
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+function renderFrame(frame) {
+  // TODO: what is
+  //  frame.context
+  //  frame.index
+
+  const html = `<li class="<%= frame.context %>"
+      TODOstyle="display: none"
+      data-context="${frame.context}"
+      data-index="${frame.index}">
+    <span class='stroke'></span>
+    <i class="icon <%= frame.context %>"></i>
+    <div class="info">
+      <div class="name">
+        <strong>${h(frame.functionName)}</strong>
+
+        <%= if app = frame.app do %>
+        <span class="app">(<%= app %>)</span>
+        <% end %>
+      </div>
+      <div class="location">
+        <span class="filename">${frame.file}</span>
+        (line <span class="line">${frame.line}</span>)
+      </div>
+    </div>
+  </li>`;
+  return html;
+}
+
+function renderHTML(data) {
   // method
   // requestPath
   // error.message
@@ -11,6 +49,8 @@ module.exports = function renderHTML(data) {
   data.requestPath  = data.requestPath || '/foo';
   data.errorMessage = data.errorMessage || 'It go bang.';
   data.uri          = data.uri || 'http://localhost:1337/foo';
+
+  const frames = data.error.stack.map(renderFrame).join('');
 
   const html = `<!DOCTYPE html>
   <html>
@@ -631,30 +671,7 @@ module.exports = function renderHTML(data) {
             <a href="#" id="all_frames">All frames</a>
           </nav>
           <ul class="frames">
-            <%= for frame <- @frames do %>
-            <li class="<%= frame.context %>"
-                style="display: none"
-                data-context="<%= frame.context %>"
-                data-index="<%= frame.index %>">
-              <span class='stroke'></span>
-              <i class="icon <%= frame.context %>"></i>
-              <div class="info">
-                <div class="name">
-                  <strong><%= h(frame.info) %></strong>
-
-                  <%= if app = frame.app do %>
-                  <span class="app">(<%= app %>)</span>
-                  <% end %>
-                </div>
-                <div class="location">
-                  <span class="filename"><%= frame.file %></span>
-                  <%= if frame.line do %>
-                  (line <span class="line"><%= frame.line %></span>)
-                  <% end %>
-                </div>
-              </div>
-            </li>
-            <% end %>
+            ${frames}
           </ul>
         </nav>
 
@@ -851,4 +868,6 @@ module.exports = function renderHTML(data) {
   </html>
   `;
   return html;
-};
+}
+
+module.exports = renderHTML;
